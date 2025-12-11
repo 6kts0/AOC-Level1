@@ -2,10 +2,10 @@
 
 ## Progress
 
-- [x] **Part One: Complete** - Password: `1089`
+**Part One: Complete** - Password: `1089`
   - Count the number of times the dial lands on 0 after any rotation
 
-- [x] **Part Two: In-progress**
+**Part Two: In-progress**
   - count the number of times any click causes the dial to point at 0, regardless of whether it happens during a rotation or at the end of one.
 
 ## Problem Summary
