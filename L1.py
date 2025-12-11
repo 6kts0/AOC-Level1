@@ -1,29 +1,31 @@
 import pandas as pd
 
+# Load rotation data from CSV
 CSV_READ = pd.read_csv('nums.csv', header=None, dtype=str)
 ROTATIONS = pd.DataFrame(CSV_READ)
 
+# Constants
 LOOP_CAP = 100
-
 DIAL_START = 50
-
 L_ROTATION = "L"
 R_ROTATION = "R"
 
+# Global state
 ZERO_COUNT = 0
-
 LR_CALC = 0
-
 I_LET = ''
 I_INT = 0
 
+
 def first_val():
+    # Process first rotation
     global LR_CALC
     global ZERO_COUNT
     for idx, i in ROTATIONS.iterrows():
         I_LET = i[0][0:1]       
         I_INT = int(i[0][1:4])
         if L_ROTATION in I_LET:  
+            # Left rotation: negate and apply modulo
             I_INT = -I_INT 
             I_INT = (I_INT + DIAL_START) % LOOP_CAP
             LR_CALC = I_INT
@@ -37,6 +39,7 @@ def first_val():
 
 
 def num_sect():
+    # Process remaining rotations
     global LR_CALC
     global ZERO_COUNT
     print(LR_CALC)
@@ -44,6 +47,7 @@ def num_sect():
         I_LET = i[0][0:1] 
         I_INT = int(i[0][1:4]) 
         if L_ROTATION in I_LET:
+            # Left rotation: subtract and wrap around
             I_INT = -I_INT
             I_INT = (I_INT + LR_CALC) % LOOP_CAP
             if I_INT == 0:
@@ -53,6 +57,7 @@ def num_sect():
             LR_CALC = I_INT
 
         elif R_ROTATION in I_LET:
+            # Right rotation: add and wrap around
             I_INT = (I_INT + LR_CALC) % 100
             if I_INT == 0:
                 ZERO_COUNT += 1
@@ -62,9 +67,9 @@ def num_sect():
     
 
 def main():
+    # Run solution
     first_val()     
     num_sect()
 
 if __name__ == "__main__":
     main()
-
