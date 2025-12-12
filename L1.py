@@ -55,26 +55,44 @@ def num_sect_p1():
 
     
 def num_sect_p2():
-    global DIAL_START
     global ZERO_COUNT
     ZERO_COUNT = 0
     x = 50
-    for idx, i in ROTATIONS.iloc[1:].iterrows():
-        ZERO_COUNT += abs(i) // 100
-        foo = 1 if i > 0 else -1
-        rem = foo * (i % 100)
-        x += rem
-        if x >= 100 or (x <= 0 and x != rem):
+    
+    # Simple rotation clarification and convert datatype
+    rotations = (ROTATIONS[0]
+        .str.replace('R', '')
+        .str.replace('L', '-')
+        .astype(int))
+    
+    for rotation in rotations:
+        # Count full loops
+        ZERO_COUNT += abs(rotation) // 100
+        # Get partial rotation (keep the sign)
+        rem = rotation % 100
+        
+        old_x = x # Pre rotated position
+
+        new_x = (x + rem) % 100 # Rotated and wrapped position
+        
+        # Check if rotation passed through 0
+        # Wraps right rotation if new position is less the the old position
+        # Wraps left rotation if the new position is greater than the old
+        if (rotation > 0 and new_x < old_x) or (rotation < 0 and new_x > old_x):
             ZERO_COUNT += 1
-        x %= 100
-print(f'{ZERO_COUNT}')
+        
+        # Updated position
+        x = new_x
+
+    print(f'Touched 0: {ZERO_COUNT}')
+
 
 
 
 def main():
-    num_sect_p2()
     #first_val_p1()     
     #num_sect_p1()
+    num_sect_p2()
 
 if __name__ == "__main__":
     main()
